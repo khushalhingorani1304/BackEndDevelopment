@@ -7,7 +7,14 @@ require('dotenv').config();
 exports.auth = (req,res,next) =>{
 
 try {
-    const token = req.body.token;
+
+    // Three types of token extraction
+
+    console.log("cookie: ",req.cookies.token);  //* this is possible because of cookie parser used in index.js
+    console.log("Body: ", req.body.token);  //* this is possible because of body parser used in index.js
+    //console.log("Header - Safest Way of Extracting Token: ", req.header("Authorization").replace("Bearer ",""));  //* "Authorization":"Bearer "<token>;
+
+    const token = req.body.token || req.cookies.token || req.header("Authorization").replace("Bearer ","");
     if(!token){
         return res.status(201).json({
             success:false,
@@ -20,7 +27,7 @@ try {
 
     try {
         const decode = Jwt.verify(token,process.env.JWT_SECRET);
-        console.log(decode);
+        // console.log(decode);
 
         req.user = decode;
         

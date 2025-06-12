@@ -99,16 +99,23 @@ exports.login = async (req, res) => {
       // Humne token jo banaya hai wo cookie ke through bhejenge response banake
       
       const options = {
-        expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+        expires: new Date(Date.now() + 30000),
         httpOnly:true,
       }
-
+      
       res.cookie("token",token,options).status(200).json({
         success:true,
         token,
         user,
         message:"User Logged in Successfully"
       })
+      
+      // res.status(200).json({
+      //   success:true,
+      //   token,
+      //   user,
+      //   message:"User Logged in Successfully"
+      // })
 
 
     }else{
